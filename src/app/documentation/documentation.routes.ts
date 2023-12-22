@@ -8,6 +8,10 @@ export default [
         path: 'kinds',
         loadComponent: () => import('./kinds/kinds.component').then(c => c.KindsComponent),
       },
+      {
+        path: 'effects',
+        loadComponent: () => import('./effects/effects.component').then(c => c.EffectsComponent),
+      },
       { path: '**', redirectTo: 'kinds', },
     ]
   }
