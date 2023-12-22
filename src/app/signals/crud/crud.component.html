@@ -1,1 +1,57 @@
-<p>crud works!</p>
+<div class="container">
+  <h1>Products</h1>
+  <div class="flex-container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Title</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products(); track $index) {
+        <tr>
+          <td>{{ product.id }}</td>
+          <td>{{ product.price | number }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.category }}</td>
+          <td class="actions">
+            <button class="btn btn-sm btn-warning" (click)="edit(product)">Edit</button>
+            <button class="btn btn-sm btn-danger" (click)="remove(product)">Remove</button>
+          </td>
+        </tr>
+        }@empty {
+        <p>Cargando productos...</p>
+        }
+      </tbody>
+    </table>
+
+    <form [formGroup]="form">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" formControlName="title">
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="text" class="form-control" id="price" formControlName="price">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input type="text" class="form-control" id="description" formControlName="description">
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image</label>
+        <input type="text" class="form-control" id="image" formControlName="image">
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input type="text" class="form-control" id="category" formControlName="category">
+      </div>
+      <button class="btn btn-primary" (click)="save()">Save</button>
+      <button class="btn btn-danger" (click)="reset()">Cancel</button>
+    </form>
+  </div>
+</div>
