@@ -1,5 +1,5 @@
-import { toSignal } from '@angular/core/rxjs-interop';
-import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DecimalPipe } from '@angular/common';
 
@@ -17,6 +17,7 @@ export class CrudComponent {
 
   private _productService = inject(ProductService);
   private _formBuilder = inject(NonNullableFormBuilder);
+  private readonly _destroyRef = inject(DestroyRef);
 
   public form: FormGroup = this._formBuilder.group({
     title: ['', [Validators.required]],
@@ -26,18 +27,32 @@ export class CrudComponent {
     category: ['', [Validators.required]]
   });
 
-  public products = toSignal(this._productService.getProducts(), { initialValue: [] });
+  public products = toSignal(this._productService.getProducts(), { initialValue: [] as Product[] });
 
   public save(): void {
-    console.log(this.form.value);
+    if (this.form.invalid) return;
+
+    this._productService.addProduct(this.form.value)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(product => {
+        console.log('Saved Product: ', product);
+      });
   }
 
   public edit(product: Product): void {
-    console.log('Editando producto ', product);
+    this._productService.updateProduct(product.id, product)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(product => {
+        console.log('Edited product: ', product);
+      });
   }
 
   public remove(product: Product): void {
-    console.log('Eliminando producto ', product);
+    this._productService.deleteProduct(product.id)
+      .pipe(takeUntilDestroyed(this._destroyRef))
+      .subscribe(resp => {
+        console.log('Deleted product: ', resp);
+      });
   }
 
   public reset(): void {

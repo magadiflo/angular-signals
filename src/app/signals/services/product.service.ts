@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { Product } from './../models/product.model';
 
@@ -25,8 +25,8 @@ export class ProductService {
     return this._httpClient.put<Product>(`${this._storeApiUrl}/products/${id}`, product);
   }
 
-  deleteProduct(id: number): Observable<null> {
-    return this._httpClient.delete<null>(`${this._storeApiUrl}/products/${id}`);
+  deleteProduct(id: number): Observable<Product> {
+    return this._httpClient.delete<Product>(`${this._storeApiUrl}/products/${id}`);
   }
 
 }
