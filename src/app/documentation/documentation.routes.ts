@@ -12,6 +12,10 @@ export default [
         path: 'effects',
         loadComponent: () => import('./effects/effects.component').then(c => c.EffectsComponent),
       },
+      {
+        path: 'rxjs-interop-for-signals',
+        loadComponent: () => import('./rxjs-interop-for-signals/rxjs-interop-for-signals.component').then(c => c.RxjsInteropForSignalsComponent),
+      },
       { path: '**', redirectTo: 'kinds', },
     ]
   }
